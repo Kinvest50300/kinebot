@@ -18,7 +18,7 @@ function ChatPopup() {
     setInput("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/chat", { message: input });
+      const res = await axios.post("https://kinebot-dqwi.onrender.com", { message: input });
       const botMessage = { sender: "bot", text: res.data.reply };
       setMessages(prev => [...prev, botMessage]);
     } catch (err) {
