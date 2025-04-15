@@ -1,4 +1,23 @@
-node_modules
+# Node modules (ne jamais push)
+node_modules/
+
+# Environnements (clés secrètes, fichiers sensibles)
 .env
-.env.local
+.env.*
+*.env
+*.key
+*.pem
+*.crt
+*.p12
+
+# Dossiers temporaires ou systèmes
 .DS_Store
+*.log
+
+# Fichiers de build React
+frontend/build/
+frontend/.cache/
+
+# Fichiers de config VS Code ou OS
+.vscode/
+Thumbs.db
