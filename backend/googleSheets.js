@@ -1,7 +1,8 @@
-
 const { google } = require('googleapis');
 const sheets = google.sheets('v4');
-const credentials = require('./credentials.json');
+
+// Récupère les credentials depuis une variable d'environnement JSON
+const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON);
 
 async function getPatientData(patientId) {
   const auth = new google.auth.GoogleAuth({
