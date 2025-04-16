@@ -8,6 +8,7 @@ function ChatPopup() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
+  // ID patient fixe pour test - à rendre dynamique plus tard
   const patientId = "PATIENT001";
 
   const toggleChat = () => setOpen(!open);
@@ -22,7 +23,7 @@ function ChatPopup() {
     try {
       const res = await axios.post("https://kinebot-dqwi.onrender.com/api/chat", {
         message: input,
-        patientId: patientId,
+        patientId: patientId
       });
 
       const botMessage = { sender: "bot", text: res.data.reply };
@@ -44,7 +45,7 @@ function ChatPopup() {
           </div>
           <div className="chat-body">
             {messages.map((msg, i) => (
-              <div key={i} className={`chat-message ${msg.sender}`}>
+              <div key={i} className={\`chat-message \${msg.sender}\`}>
                 {msg.text}
               </div>
             ))}
