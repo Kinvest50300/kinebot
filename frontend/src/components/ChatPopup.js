@@ -8,6 +8,9 @@ function ChatPopup() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
+  // ➕ ID patient (à récupérer dynamiquement ou à lier au compte connecté)
+  const patientId = "PATIENT001";
+
   const toggleChat = () => setOpen(!open);
 
   const sendMessage = async () => {
@@ -18,7 +21,11 @@ function ChatPopup() {
     setInput("");
 
     try {
-      const res = await axios.post("https://kinebot-dqwi.onrender.com/api/chat", { message: input });
+      const res = await axios.post("https://kinebot-dqwi.onrender.com/api/chat", {
+        message: input,
+        patientId: patientId,
+      });
+
       const botMessage = { sender: "bot", text: res.data.reply };
       setMessages(prev => [...prev, botMessage]);
     } catch (err) {
@@ -38,7 +45,7 @@ function ChatPopup() {
           </div>
           <div className="chat-body">
             {messages.map((msg, i) => (
-              <div key={i} className={`chat-message ${msg.sender}`}>
+              <div key={i} className={\`chat-message \${msg.sender}\`}>
                 {msg.text}
               </div>
             ))}
