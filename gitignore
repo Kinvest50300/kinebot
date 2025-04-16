@@ -1,0 +1,29 @@
+
+# ✅ Variables d'environnement (NE PAS PUSHER)
+.env
+*.env
+credentials.json
+backend/env
+backend/env.json
+
+# 📦 Node modules
+node_modules/
+
+# ⚙️ Build React
+frontend/build/
+
+# 🧪 Logs & fichiers système
+*.log
+.DS_Store
+.vscode/
+
+# 📁 Temporaire
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 📦 Configuration utilisateur locale
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
