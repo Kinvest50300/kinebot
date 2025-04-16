@@ -2,37 +2,31 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config({ path: './.env' });
-console.log("Clé API détectée :", process.env.OPENAI_API_KEY);
-const OpenAI = require('openai');
+
+const getPatientData = require('./googleSheets');
+const queryAnythingLLM = require('./anythingllm');
+const generateResponse = require('./generateResponse');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 app.post('/api/chat', async (req, res) => {
-  const userMsg = req.body.message;
+  const { message, patientId } = req.body;
 
   try {
-    const chatCompletion = await openai.chat.completions.create({
-      model: "gpt-4",
-      messages: [
-        {
-          role: "system",
-          content: "Tu es un assistant de rééducation pour patients. Tu tutoies le patient, tu restes clair, bienveillant, et professionnel.",
-        },
-        { role: "user", content: userMsg },
-      ],
-    });
+    if (!patientId) throw new Error("Identifiant patient manquant.");
+    if (!message) throw new Error("Message vide.");
 
-    const reply = chatCompletion.choices[0].message.content;
+    const patientData = await getPatientData(patientId);
+    if (!patientData) throw new Error("Patient introuvable dans Google Sheets.");
+
+    const llmKnowledge = await queryAnythingLLM(message);
+    const reply = await generateResponse(patientData, llmKnowledge, message);
     res.json({ reply });
   } catch (error) {
-    console.error("Erreur OpenAI:", error.message);
-    res.status(500).json({ reply: "Erreur GPT-4 : " + error.message });
+    console.error("Erreur personnalisée :", error.message);
+    res.status(500).json({ reply: "Erreur : " + error.message });
   }
 });
 
