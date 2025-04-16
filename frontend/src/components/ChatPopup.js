@@ -45,7 +45,7 @@ function ChatPopup() {
           </div>
           <div className="chat-body">
             {messages.map((msg, i) => (
-              <div key={i} className={\`chat-message \${msg.sender}\`}>
+              <div key={i} className={`chat-message ${msg.sender}`}>
                 {msg.text}
               </div>
             ))}
