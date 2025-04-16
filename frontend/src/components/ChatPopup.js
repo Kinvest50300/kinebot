@@ -8,7 +8,6 @@ function ChatPopup() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
-  // ➕ ID patient (à récupérer dynamiquement ou à lier au compte connecté)
   const patientId = "PATIENT001";
 
   const toggleChat = () => setOpen(!open);
