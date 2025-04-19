@@ -12,6 +12,7 @@ backend/build/
 .env
 *.env
 credentials.json
+temp_credentials.json
 
 # 🧪 Logs et fichiers système
 *.log
