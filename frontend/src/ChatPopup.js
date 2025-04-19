@@ -6,7 +6,7 @@ function ChatPopup() {
     { sender: 'bot', text: "Bienvenue dans le chat 👋\nPose ta question, je suis là pour t'aider !" }
   ]);
   const [input, setInput] = useState('');
-  const patientId = 'PATIENT001'; // ID statique pour test
+  function ChatPopup({ patientId }) {
 
   const handleSend = async () => {
     if (!input.trim()) return;
