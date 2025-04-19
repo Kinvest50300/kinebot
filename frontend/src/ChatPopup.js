@@ -34,7 +34,7 @@ function ChatPopup({ patientId }) {
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+            className={\`flex \${msg.sender === 'user' ? 'justify-end' : 'justify-start'}\`}
           >
             <div className={\`px-4 py-2 rounded-lg max-w-xs text-sm \${msg.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-300 text-black'}\`}>
               {msg.text}
