@@ -6,14 +6,14 @@ const fs = require('fs');
 const raw = process.env.GOOGLE_CREDENTIALS_JSON;
 const parsed = JSON.parse(raw);
 
-// Étape 2 : Corriger les sauts de ligne dans private_key
-parsed.private_key = parsed.private_key.replace(/\\n/g, '\n');
+// Étape 2 : Transformer la clé pour avoir de vrais sauts de ligne
+parsed.private_key = parsed.private_key.split('\\n').join('\n');
 
-// Étape 3 : Écrire le JSON corrigé dans un fichier temporaire
+// Étape 3 : Écrire le fichier temporaire
 const tempPath = './temp_credentials.json';
 fs.writeFileSync(tempPath, JSON.stringify(parsed), 'utf8');
 
-// Étape 4 : Charger les credentials à partir du fichier
+// Étape 4 : Charger les credentials depuis le fichier
 const credentials = require(tempPath);
 
 async function getPatientData(patientId) {
