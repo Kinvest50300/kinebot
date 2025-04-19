@@ -1,8 +1,16 @@
 // src/App.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ChatPopup from './ChatPopup';
 
 function App() {
+  const [patientId, setPatientId] = useState(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("patientId");
+    setPatientId(id || 'demo-patient'); // Fallback si aucun ID fourni
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#f0f4f8] flex flex-col items-center justify-center px-4">
       {/* Header de présentation */}
@@ -15,7 +23,11 @@ function App() {
       </header>
 
       {/* Zone de chat centrale */}
-      <ChatPopup patientId="demo-patient" />
+      {patientId ? (
+        <ChatPopup patientId={patientId} />
+      ) : (
+        <p className="text-gray-600">Chargement...</p>
+      )}
     </div>
   );
 }
