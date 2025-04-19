@@ -1,20 +1,32 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function ChatPopup() {
   const [messages, setMessages] = useState([
-    { sender: 'bot', text: 'Bienvenue dans le chat 👋 
-Si tu as une question, n'hésite pas, je suis là pour ca! 😉 ?' }
+    { sender: 'bot', text: "Bienvenue dans le chat 👋\nPose ta question, je suis là pour t'aider !" }
   ]);
   const [input, setInput] = useState('');
+  const patientId = 'PATIENT001'; // ID statique pour test
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
 
     const userMessage = { sender: 'user', text: input };
-    const botReply = { sender: 'bot', text: "Merci pour votre message !" }; // réponse statique temporaire
-
-    setMessages([...messages, userMessage, botReply]);
+    setMessages(prev => [...prev, userMessage]);
     setInput('');
+
+    try {
+      const res = await axios.post('/api/chat', {
+        message: input,
+        patientId
+      });
+
+      const botMessage = { sender: 'bot', text: res.data.reply };
+      setMessages(prev => [...prev, botMessage]);
+    } catch (err) {
+      const errorMessage = { sender: 'bot', text: "❌ Erreur : impossible de contacter l'assistant." };
+      setMessages(prev => [...prev, errorMessage]);
+    }
   };
 
   return (
@@ -25,9 +37,7 @@ Si tu as une question, n'hésite pas, je suis là pour ca! 😉 ?' }
             key={index}
             className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
           >
-            <div className={`px-4 py-2 rounded-lg max-w-xs text-sm ${
-              msg.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-300 text-black'
-            }`}>
+            <div className={\`px-4 py-2 rounded-lg max-w-xs text-sm \${msg.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-300 text-black'}\`}>
               {msg.text}
             </div>
           </div>
