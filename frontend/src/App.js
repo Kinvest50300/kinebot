@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ChatPopup from './components/ChatPopup';
+import ChatPopup from './ChatPopup';
 
 function App() {
   const [patientId, setPatientId] = useState(null);
