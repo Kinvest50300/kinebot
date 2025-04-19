@@ -8,12 +8,16 @@ const generateResponse = require('./generateResponse');
 
 const app = express();
 
+// CORS complet : autoriser Vercel + localhost + toutes les routes + OPTIONS
 const allowedOrigins = ['http://localhost:3000', 'https://kinebot.vercel.app'];
 app.use(cors({
   origin: allowedOrigins,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
   credentials: true
 }));
-app.options('/api/chat', cors()); // Autorise les pré-requêtes CORS (OPTIONS)
+
+app.options('*', cors()); // Gérer les pré-requêtes pour toutes les routes
 
 app.use(express.json());
 
