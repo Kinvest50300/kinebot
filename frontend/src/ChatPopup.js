@@ -15,7 +15,7 @@ function ChatPopup({ patientId }) {
     setInput('');
 
     try {
-      const res = await axios.post('/api/chat', {
+      const res = await axios.post('https://kinebot-dqwi.onrender.com/api/chat', {
         message: input,
         patientId
       });
