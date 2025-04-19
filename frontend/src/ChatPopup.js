@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 function ChatPopup() {
   const [messages, setMessages] = useState([
-    { sender: 'bot', text: 'Bonjour 👋 Si tu as une question, je suis là pour ca! 😉 ?' }
+    { sender: 'bot', text: 'Bienvenue dans le chat 👋 
+Si tu as une question, n'hésite pas, je suis là pour ca! 😉 ?' }
   ]);
   const [input, setInput] = useState('');
 
