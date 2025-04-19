@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function ChatPopup() {
+function ChatPopup({ patientId }) {
   const [messages, setMessages] = useState([
     { sender: 'bot', text: "Bienvenue dans le chat 👋\nPose ta question, je suis là pour t'aider !" }
   ]);
   const [input, setInput] = useState('');
-  function ChatPopup({ patientId }) {
 
   const handleSend = async () => {
     if (!input.trim()) return;
