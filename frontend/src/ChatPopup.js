@@ -3,7 +3,7 @@ import axios from 'axios';
 
 function ChatPopup({ patientId }) {
   const [messages, setMessages] = useState([
-    { sender: 'bot', text: "Bienvenue dans le chat 👋\nPose ta question, je suis là pour t'aider !" }
+    { sender: 'bot', text: "Bienvenue dans le chat. Pose ta question, je suis là pour t'aider." }
   ]);
   const [input, setInput] = useState('');
 
@@ -23,7 +23,7 @@ function ChatPopup({ patientId }) {
       const botMessage = { sender: 'bot', text: res.data.reply };
       setMessages(prev => [...prev, botMessage]);
     } catch (err) {
-      const errorMessage = { sender: 'bot', text: "❌ Erreur : impossible de contacter l'assistant." };
+      const errorMessage = { sender: 'bot', text: "Erreur : impossible de contacter l'assistant." };
       setMessages(prev => [...prev, errorMessage]);
     }
   };
@@ -34,9 +34,15 @@ function ChatPopup({ patientId }) {
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={\`flex \${msg.sender === 'user' ? 'justify-end' : 'justify-start'}\`}
+            className={msg.sender === 'user' ? 'flex justify-end' : 'flex justify-start'}
           >
-            <div className={\`px-4 py-2 rounded-lg max-w-xs text-sm \${msg.sender === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-300 text-black'}\`}>
+            <div
+              className={
+                msg.sender === 'user'
+                  ? 'px-4 py-2 rounded-lg max-w-xs text-sm bg-blue-600 text-white'
+                  : 'px-4 py-2 rounded-lg max-w-xs text-sm bg-gray-300 text-black'
+              }
+            >
               {msg.text}
             </div>
           </div>
@@ -47,7 +53,7 @@ function ChatPopup({ patientId }) {
         <input
           type="text"
           className="flex-1 border rounded px-3 py-2 focus:outline-none"
-          placeholder="Écris ton message..."
+          placeholder="Ecris ton message..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
