@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 function ChatPopup() {
   const [messages, setMessages] = useState([
-    { sender: 'bot', text: 'Bienvenue sur KinéBot 👋 Comment puis-je vous aider ?' }
+    { sender: 'bot', text: 'Bonjour 👋 Si tu as une question, je suis là pour ca! 😉 ?' }
   ]);
   const [input, setInput] = useState('');
 
