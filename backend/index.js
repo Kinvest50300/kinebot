@@ -7,9 +7,14 @@ const queryAnythingLLM = require('./anythingllm');
 const generateResponse = require('./generateResponse');
 
 const app = express();
+
+const allowedOrigins = ['http://localhost:3000', 'https://kinebot.vercel.app'];
 app.use(cors({
-  origin: 'https://kinebot.vercel.app'
+  origin: allowedOrigins,
+  credentials: true
 }));
+app.options('/api/chat', cors()); // Autorise les pré-requêtes CORS (OPTIONS)
+
 app.use(express.json());
 
 app.post('/api/chat', async (req, res) => {
