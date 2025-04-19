@@ -2,12 +2,18 @@ const { google } = require('googleapis');
 const sheets = google.sheets('v4');
 const fs = require('fs');
 
-// Écrit GOOGLE_CREDENTIALS_JSON dans un fichier temporaire
-const rawCredentials = process.env.GOOGLE_CREDENTIALS_JSON;
+// Étape 1 : Lire et parser la variable d'environnement
+const raw = process.env.GOOGLE_CREDENTIALS_JSON;
+const parsed = JSON.parse(raw);
 
+// Étape 2 : Corriger les sauts de ligne dans private_key
+parsed.private_key = parsed.private_key.replace(/\\n/g, '\n');
+
+// Étape 3 : Écrire le JSON corrigé dans un fichier temporaire
 const tempPath = './temp_credentials.json';
-fs.writeFileSync(tempPath, rawCredentials, 'utf8');
+fs.writeFileSync(tempPath, JSON.stringify(parsed), 'utf8');
 
+// Étape 4 : Charger les credentials à partir du fichier
 const credentials = require(tempPath);
 
 async function getPatientData(patientId) {
