@@ -1,10 +1,21 @@
 const { google } = require('googleapis');
 const sheets = google.sheets('v4');
 
-// Récupère les credentials depuis une variable d'environnement JSON
-const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON);
+// DEBUG: Affiche ce que Render lit depuis la variable d'environnement
+const raw = process.env.GOOGLE_CREDENTIALS_JSON;
+try {
+  const credentials = JSON.parse(raw);
+  console.log("✅ Clé lue depuis GOOGLE_CREDENTIALS_JSON :");
+  console.log(credentials.private_key.slice(0, 100) + "...");
+  console.log("Longueur totale :", credentials.private_key.length);
+} catch (err) {
+  console.error("❌ Erreur de parsing GOOGLE_CREDENTIALS_JSON :", err.message);
+  throw err;
+}
 
 async function getPatientData(patientId) {
+  const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON);
+
   const auth = new google.auth.GoogleAuth({
     credentials,
     scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
