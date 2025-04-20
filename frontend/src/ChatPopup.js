@@ -67,27 +67,32 @@ function ChatPopup({ patientId }) {
       </div>
 
       {/* Messages */}
-      <div className="min-h-[300px] max-h-[400px] overflow-y-auto p-4 space-y-3 bg-[#f9fafb] pb-12">
+      <div className="min-h-[300px] max-h-[400px] overflow-y-auto p-4 space-y-3 bg-[#ffffffaa] pb-12">
         {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} items-start gap-2 animate-fade-in`}
-          >
-            {msg.sender === 'bot' && (
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png"
-                alt="KinéBot Avatar"
-                className="w-8 h-8 rounded-full"
-              />
+          <div key={index} className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} animate-fade-in`}>
+            {msg.sender === 'bot' && index === 0 && (
+              <div className="text-xs text-gray-500 mb-1 ml-10">KinéBot</div>
             )}
-            <div
-              className={`px-4 py-2 rounded-xl max-w-[80%] text-sm leading-relaxed ${
-                msg.sender === 'user'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-800'
-              }`}
-            >
-              {msg.text}
+            {msg.sender === 'user' && (
+              <div className="text-xs text-gray-500 mb-1 mr-10">Vous</div>
+            )}
+            <div className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} items-start gap-2 w-full`}>
+              {msg.sender === 'bot' && (
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png"
+                  alt="KinéBot Avatar"
+                  className="w-8 h-8 rounded-full"
+                />
+              )}
+              <div
+                className={`px-4 py-2 rounded-xl max-w-[80%] w-fit text-sm leading-relaxed text-left ${
+                  msg.sender === 'user'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-800'
+                }`}
+              >
+                {msg.text}
+              </div>
             </div>
           </div>
         ))}
