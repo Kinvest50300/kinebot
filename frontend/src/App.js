@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import ChatPopup from './ChatPopup';
 import Dashboard from './Dashboard';
+import chatBotIcon from './assets/Bouton chat robot.png';
 
 function App() {
   const [patientId, setPatientId] = useState(null);
@@ -46,7 +47,7 @@ function App() {
         </div>
       </main>
 
-      {/* Bouton flottant mobile pour afficher le chat */}
+      {/* Bouton flottant mobile classique (bulle) */}
       <button
         onClick={() => setShowChat(!showChat)}
         className="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-lg md:hidden hover:bg-blue-700 focus:outline-none transition-transform duration-200 active:scale-95"
