@@ -5,6 +5,7 @@ import Dashboard from './Dashboard';
 
 function App() {
   const [patientId, setPatientId] = useState(null);
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -13,7 +14,7 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#e3f2fd] to-[#d0e8f9] flex flex-col text-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-[#e3f2fd] to-[#d0e8f9] flex flex-col text-gray-800 relative">
       {/* Header de présentation */}
       <header className="text-center py-6">
         <h1 className="text-4xl font-extrabold text-blue-700 mb-2 tracking-tight">
@@ -30,7 +31,13 @@ function App() {
         <div className="w-full md:max-w-md border-r border-gray-300 md:pr-6">
           <Dashboard />
         </div>
-        <div className="w-full md:max-w-md md:pl-6">
+
+        {/* Chat avec animation */}
+        <div
+          className={`w-full md:max-w-md md:pl-6 transform transition-all duration-300 ease-in-out origin-bottom md:origin-left ${
+            showChat ? 'scale-100 opacity-100 h-auto' : 'scale-95 opacity-0 h-0 overflow-hidden'
+          } md:scale-100 md:opacity-100 md:h-auto md:overflow-visible`}
+        >
           {patientId ? (
             <ChatPopup patientId={patientId} />
           ) : (
@@ -38,6 +45,15 @@ function App() {
           )}
         </div>
       </main>
+
+      {/* Bouton flottant mobile pour afficher le chat */}
+      <button
+        onClick={() => setShowChat(!showChat)}
+        className="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-lg md:hidden hover:bg-blue-700 focus:outline-none transition-transform duration-200 active:scale-95"
+        aria-label="Ouvrir ou fermer le chat"
+      >
+        {showChat ? '✖️' : '💬'}
+      </button>
 
       {/* Footer */}
       <footer className="text-center py-4 text-xs text-blue-900 opacity-60">

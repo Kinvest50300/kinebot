@@ -51,7 +51,9 @@ function ChatPopup({ patientId }) {
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
-      inputRef.current?.focus();
+
+      // Ne pas focus automatiquement pour éviter l'ouverture du clavier sur mobile
+      // inputRef.current?.focus();
     }
   };
 
