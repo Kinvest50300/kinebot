@@ -1,21 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 function ChatPopup({ patientId }) {
   const [messages, setMessages] = useState([
     {
       sender: 'bot',
-      text: "Bienvenue dans le chat. Pose ta question, je suis là pour t'aider.",
+      text: getWelcomeMessage(),
     },
   ]);
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
+
+  function getWelcomeMessage() {
+    const heure = new Date().getHours();
+    const salutation =
+      heure < 12 ? 'Bonjour' : heure < 18 ? 'Bon après-midi' : 'Bonsoir';
+    return `${salutation} ! Je suis KinéBot, ton assistant IA. Pose ta question.`;
+  }
 
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    const userMessage = { sender: 'user', text: input };
+    const userMessage = {
+      sender: 'user',
+      text: input,
+    };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
+    setIsLoading(true);
 
     try {
       const res = await axios.post('https://kinebot-dqwi.onrender.com/api/chat', {
@@ -23,7 +37,10 @@ function ChatPopup({ patientId }) {
         patientId,
       });
 
-      const botMessage = { sender: 'bot', text: res.data.reply };
+      const botMessage = {
+        sender: 'bot',
+        text: res.data.reply,
+      };
       setMessages((prev) => [...prev, botMessage]);
     } catch (err) {
       const errorMessage = {
@@ -31,56 +48,75 @@ function ChatPopup({ patientId }) {
         text: "Erreur : impossible de contacter l'assistant.",
       };
       setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+      inputRef.current?.focus();
     }
   };
 
-  return (
-    <div className="flex justify-center items-center min-h-screen bg-[#f0f4f8] px-4">
-      <div className="w-full max-w-md h-[600px] bg-white rounded-2xl shadow-xl flex flex-col border border-gray-200 text-black">
-        {/* Header */}
-        <div className="bg-blue-600 text-white p-4 rounded-t-2xl font-semibold text-center text-lg">
-          KinéBot – Assistant IA
-        </div>
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#f9fafb]">
-          {messages.map((msg, index) => (
+  return (
+    <div className="w-full max-w-md bg-white rounded-2xl shadow-xl flex flex-col border border-gray-200 text-black">
+      {/* Header */}
+      <div className="bg-blue-600 text-white p-4 rounded-t-2xl font-semibold text-center text-lg">
+        KinéBot
+      </div>
+
+      {/* Messages */}
+      <div className="min-h-[300px] max-h-[400px] overflow-y-auto p-4 space-y-3 bg-[#f9fafb] pb-12">
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} items-start gap-2`}
+          >
+            {msg.sender === 'bot' && (
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png"
+                alt="KinéBot Avatar"
+                className="w-8 h-8 rounded-full"
+              />
+            )}
             <div
-              key={index}
-              className={`flex ${
-                msg.sender === 'user' ? 'justify-end' : 'justify-start'
+              className={`px-4 py-2 rounded-xl max-w-[80%] text-sm leading-relaxed ${
+                msg.sender === 'user'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-800'
               }`}
             >
-              <div
-                className={`px-4 py-2 rounded-xl max-w-[80%] text-sm leading-relaxed ${
-                  msg.sender === 'user'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-800'
-                }`}
-              >
-                {msg.text}
-              </div>
+              {msg.text}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+        {isLoading && (
+          <div className="text-sm text-gray-500 italic" role="alert">
+            KinéBot rédige une réponse…
+          </div>
+        )}
+        <div ref={messagesEndRef} />
+      </div>
 
-        {/* Input */}
-        <div className="flex p-3 border-t border-gray-200 bg-white gap-2">
-          <input
-            type="text"
-            placeholder="Écris ton message..."
-            className="flex-1 px-3 py-2 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-          />
-          <button
-            onClick={handleSend}
-            className="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 text-sm font-medium"
-          >
-            Envoyer
-          </button>
-        </div>
+      {/* Input */}
+      <div className="flex p-3 border-t border-gray-200 bg-white gap-2">
+        <input
+          type="text"
+          placeholder="Écris ton message..."
+          className="flex-1 px-3 py-2 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          aria-label="Zone de saisie du message"
+          value={input}
+          ref={inputRef}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+        />
+        <button
+          onClick={handleSend}
+          className="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 text-sm font-medium"
+          aria-label="Envoyer le message"
+        >
+          Envoyer
+        </button>
       </div>
     </div>
   );
