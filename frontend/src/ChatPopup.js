@@ -60,7 +60,7 @@ function ChatPopup({ patientId }) {
   }, [messages]);
 
   return (
-    <div className="w-full max-w-md bg-white rounded-2xl shadow-xl flex flex-col border border-gray-200 text-black">
+    <div className="w-full md:max-w-md bg-white rounded-2xl shadow-xl flex flex-col border border-gray-200 text-black">
       {/* Header */}
       <div className="bg-blue-600 text-white p-4 rounded-t-2xl font-semibold text-center text-lg">
         KinéBot

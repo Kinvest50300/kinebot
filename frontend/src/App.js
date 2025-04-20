@@ -1,4 +1,4 @@
-// src/App.js
+// App.js
 import React, { useEffect, useState } from 'react';
 import ChatPopup from './ChatPopup';
 import Dashboard from './Dashboard';
@@ -25,12 +25,12 @@ function App() {
         </p>
       </header>
 
-      {/* Contenu principal en 2 colonnes */}
-      <main className="flex flex-1 w-full px-6 py-4 gap-6 justify-center">
-        <div className="w-full max-w-md border-r border-gray-300 pr-6">
+      {/* Contenu principal responsive */}
+      <main className="flex flex-col md:flex-row flex-1 w-full px-4 py-4 gap-4 justify-center">
+        <div className="w-full md:max-w-md border-r border-gray-300 md:pr-6">
           <Dashboard />
         </div>
-        <div className="w-full max-w-md pl-6">
+        <div className="w-full md:max-w-md md:pl-6">
           {patientId ? (
             <ChatPopup patientId={patientId} />
           ) : (
