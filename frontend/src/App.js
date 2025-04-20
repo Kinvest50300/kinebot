@@ -12,11 +12,13 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f0f4f8] flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen bg-[#e3f2fd] flex flex-col items-center justify-start pt-10 px-4 text-gray-800">
       {/* Header de présentation */}
       <header className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-blue-800 mb-2">KinéBot – Assistant IA</h1>
-        <p className="text-gray-700 text-base max-w-xl">
+        <h1 className="text-4xl font-extrabold text-blue-700 mb-3 tracking-tight">
+          KinéBot
+        </h1>
+        <p className="text-base max-w-xl text-blue-900 leading-relaxed">
           KinéBot est un assistant intelligent conçu pour accompagner les kinésithérapeutes dans leur pratique
           et guider les patients dans leur rééducation. Posez-lui vos questions, il est là pour vous aider.
         </p>
@@ -26,8 +28,13 @@ function App() {
       {patientId ? (
         <ChatPopup patientId={patientId} />
       ) : (
-        <p className="text-gray-600">Chargement...</p>
+        <p className="text-blue-600">Chargement...</p>
       )}
+
+      {/* Footer discret */}
+      <footer className="mt-10 text-xs text-blue-900 opacity-60">
+        © {new Date().getFullYear()} KinéBot. Tous droits réservés.
+      </footer>
     </div>
   );
 }
