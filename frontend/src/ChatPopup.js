@@ -1,3 +1,4 @@
+// ChatPopup.js
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
@@ -70,7 +71,7 @@ function ChatPopup({ patientId }) {
         {messages.map((msg, index) => (
           <div
             key={index}
-            className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} items-start gap-2`}
+            className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} items-start gap-2 animate-fade-in`}
           >
             {msg.sender === 'bot' && (
               <img
@@ -91,8 +92,10 @@ function ChatPopup({ patientId }) {
           </div>
         ))}
         {isLoading && (
-          <div className="text-sm text-gray-500 italic" role="alert">
-            KinéBot rédige une réponse…
+          <div className="flex items-center gap-1" role="alert">
+            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
           </div>
         )}
         <div ref={messagesEndRef} />
