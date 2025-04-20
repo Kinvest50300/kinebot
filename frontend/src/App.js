@@ -1,6 +1,7 @@
 // src/App.js
 import React, { useEffect, useState } from 'react';
 import ChatPopup from './ChatPopup';
+import Dashboard from './Dashboard';
 
 function App() {
   const [patientId, setPatientId] = useState(null);
@@ -8,31 +9,38 @@ function App() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const id = params.get("patientId");
-    setPatientId(id || 'demo-patient'); // Fallback si aucun ID fourni
+    setPatientId(id || 'demo-patient');
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#e3f2fd] flex flex-col items-center justify-start pt-10 px-4 text-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-[#e3f2fd] to-[#d0e8f9] flex flex-col text-gray-800">
       {/* Header de présentation */}
-      <header className="text-center mb-8">
-        <h1 className="text-4xl font-extrabold text-blue-700 mb-3 tracking-tight">
+      <header className="text-center py-6">
+        <h1 className="text-4xl font-extrabold text-blue-700 mb-2 tracking-tight">
           KinéBot
         </h1>
-        <p className="text-base max-w-xl text-blue-900 leading-relaxed">
+        <p className="text-base max-w-2xl mx-auto text-blue-900 leading-relaxed">
           KinéBot est un assistant intelligent conçu pour accompagner les kinésithérapeutes dans leur pratique
           et guider les patients dans leur rééducation. Posez-lui vos questions, il est là pour vous aider.
         </p>
       </header>
 
-      {/* Zone de chat centrale */}
-      {patientId ? (
-        <ChatPopup patientId={patientId} />
-      ) : (
-        <p className="text-blue-600">Chargement...</p>
-      )}
+      {/* Contenu principal en 2 colonnes */}
+      <main className="flex flex-1 w-full px-6 py-4 gap-6 justify-center">
+        <div className="w-full max-w-md border-r border-gray-300 pr-6">
+          <Dashboard />
+        </div>
+        <div className="w-full max-w-md pl-6">
+          {patientId ? (
+            <ChatPopup patientId={patientId} />
+          ) : (
+            <p className="text-blue-600">Chargement...</p>
+          )}
+        </div>
+      </main>
 
-      {/* Footer discret */}
-      <footer className="mt-10 text-xs text-blue-900 opacity-60">
+      {/* Footer */}
+      <footer className="text-center py-4 text-xs text-blue-900 opacity-60">
         © {new Date().getFullYear()} KinéBot. Tous droits réservés.
       </footer>
     </div>
