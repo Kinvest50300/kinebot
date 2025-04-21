@@ -4,7 +4,7 @@ async function queryAnythingLLM(question) {
   console.log("Appel réel à AnythingLLM :", question);
 
   try {
-    const res = await axios.post('https://anything-llm-4abm.onrender.com/query', {
+    const res = await axios.post('https://anything-llm-back.onrender.com/query', {
       query: question
     }, {
       headers: {
