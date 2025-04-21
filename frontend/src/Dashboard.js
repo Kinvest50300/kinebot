@@ -9,7 +9,7 @@ function Dashboard() {
       </div>
       <div className="p-4 space-y-4 bg-[#f9fafb]">
         <p className="text-sm">
-          Liste d'exercices, échelle de douleur, etc...
+          Liste d'exercices, échelle de douleur, l'OGC Nice est à chier
         </p>
       </div>
     </div>
