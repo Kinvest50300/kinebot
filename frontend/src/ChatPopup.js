@@ -51,15 +51,22 @@ function ChatPopup({ patientId }) {
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
-
-      // Ne pas focus automatiquement pour éviter l'ouverture du clavier sur mobile
-      // inputRef.current?.focus();
     }
   };
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Fonction utilitaire pour découper proprement les blocs de texte en paragraphes
+  const renderMessageText = (text) => {
+    const lines = text.split(/\n|(?=\d+\.\s)/g).filter(Boolean);
+    return lines.map((line, idx) => (
+      <p key={idx} className="mb-1 text-justify leading-relaxed whitespace-pre-wrap break-words">
+        {line.trim()}
+      </p>
+    ));
+  };
 
   return (
     <div className="w-full md:max-w-md bg-white rounded-2xl shadow-xl flex flex-col border border-gray-200 text-black">
@@ -87,13 +94,13 @@ function ChatPopup({ patientId }) {
                 />
               )}
               <div
-                className={`px-4 py-2 rounded-xl max-w-[80%] w-fit text-sm leading-relaxed text-left ${
+                className={`px-4 py-2 rounded-xl max-w-[80%] w-fit text-sm bg-white shadow-sm space-y-1 ${
                   msg.sender === 'user'
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-200 text-gray-800'
                 }`}
               >
-                {msg.text}
+                {renderMessageText(msg.text)}
               </div>
             </div>
           </div>
