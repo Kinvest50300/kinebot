@@ -1,5 +1,5 @@
 // App.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import ChatPopup from './ChatPopup';
 import Dashboard from './Dashboard';
 import chatBotIcon from './assets/Bouton chat robot.png';
@@ -7,6 +7,7 @@ import chatBotIcon from './assets/Bouton chat robot.png';
 function App() {
   const [patientId, setPatientId] = useState(null);
   const [showChat, setShowChat] = useState(false);
+  const chatRef = useRef();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -14,51 +15,67 @@ function App() {
     setPatientId(id || 'demo-patient');
   }, []);
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (chatRef.current && !chatRef.current.contains(event.target)) {
+        setShowChat(false);
+      }
+    }
+    if (showChat) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showChat]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#e3f2fd] to-[#d0e8f9] flex flex-col text-gray-800 relative">
-      {/* Header de présentation */}
       <header className="text-center py-6">
         <h1 className="text-4xl font-extrabold text-blue-700 mb-2 tracking-tight">
-          KinéBot
+          Mon Assistant Kiné
         </h1>
         <p className="text-base max-w-2xl mx-auto text-blue-900 leading-relaxed">
-          KinéBot est un assistant intelligent conçu pour accompagner les kinésithérapeutes dans leur pratique
+          Mon Assistant Kiné est un assistant intelligent conçu pour accompagner les kinésithérapeutes dans leur pratique
           et guider les patients dans leur rééducation. Posez-lui vos questions, il est là pour vous aider.
         </p>
       </header>
 
-      {/* Contenu principal responsive */}
-      <main className="flex flex-col md:flex-row flex-1 w-full px-4 py-4 gap-4 justify-center">
-        <div className="w-full md:max-w-md border-r border-gray-300 md:pr-6">
+      <main className="flex flex-col items-center flex-1 w-full px-4 py-4 gap-4">
+        <div className="w-full max-w-5xl mx-auto">
           <Dashboard />
         </div>
+      </main>
 
-        {/* Chat avec animation */}
-        <div
-          className={`w-full md:max-w-md md:pl-6 transform transition-all duration-300 ease-in-out origin-bottom md:origin-left ${
-            showChat ? 'scale-100 opacity-100 h-auto' : 'scale-95 opacity-0 h-0 overflow-hidden'
-          } md:scale-100 md:opacity-100 md:h-auto md:overflow-visible`}
-        >
+      {showChat && (
+        <div ref={chatRef} className="fixed bottom-20 right-6 w-full max-w-md z-50 shadow-2xl">
           {patientId ? (
             <ChatPopup patientId={patientId} />
           ) : (
             <p className="text-blue-600">Chargement...</p>
           )}
         </div>
-      </main>
+      )}
 
-      {/* Bouton flottant mobile classique (bulle) */}
       <button
         onClick={() => setShowChat(!showChat)}
-        className="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-lg md:hidden hover:bg-blue-700 focus:outline-none transition-transform duration-200 active:scale-95"
+        className="fixed bottom-6 right-6 z-50 focus:outline-none active:scale-95 transition-transform"
+        style={{ borderRadius: '9999px', padding: 0 }}
         aria-label="Ouvrir ou fermer le chat"
       >
-        {showChat ? '✖️' : '💬'}
+        {showChat ? (
+          <div className="w-14 h-14 bg-white border border-blue-300 rounded-full flex items-center justify-center shadow-lg">
+            <span className="text-xl text-blue-700 font-bold">✖</span>
+          </div>
+        ) : (
+          <img
+            src={chatBotIcon}
+            alt="Bouton Une question avec robot"
+            className="w-40 max-w-[30vw] h-auto shadow-lg"
+          />
+        )}
       </button>
 
-      {/* Footer */}
       <footer className="text-center py-4 text-xs text-blue-900 opacity-60">
-        © {new Date().getFullYear()} KinéBot. Tous droits réservés.
+        © {new Date().getFullYear()} Mon Assistant Kiné. Tous droits réservés.
       </footer>
     </div>
   );
