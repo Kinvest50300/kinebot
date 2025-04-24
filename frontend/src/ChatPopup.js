@@ -3,16 +3,29 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 function ChatPopup({ patientId }) {
-  const [messages, setMessages] = useState([
-    {
-      sender: 'bot',
-      text: getWelcomeMessage(),
-    },
-  ]);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    const saved = sessionStorage.getItem(`chat-${patientId}`);
+    if (saved) {
+      setMessages(JSON.parse(saved));
+    } else {
+      setMessages([
+        {
+          sender: 'bot',
+          text: getWelcomeMessage(),
+        },
+      ]);
+    }
+  }, [patientId]);
+
+  useEffect(() => {
+    sessionStorage.setItem(`chat-${patientId}`, JSON.stringify(messages));
+  }, [messages, patientId]);
 
   function getWelcomeMessage() {
     const heure = new Date().getHours();
