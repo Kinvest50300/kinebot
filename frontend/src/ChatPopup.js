@@ -18,7 +18,7 @@ function ChatPopup({ patientId }) {
     const heure = new Date().getHours();
     const salutation =
       heure < 12 ? 'Bonjour' : heure < 18 ? 'Bon après-midi' : 'Bonsoir';
-    return `${salutation} ! Je suis KinéBot, ton assistant IA. Pose ta question.`;
+    return `${salutation} ! Je suis MAK, ton assistant IA. Pose ta question.`;
   }
 
   const handleSend = async () => {
@@ -68,10 +68,10 @@ function ChatPopup({ patientId }) {
   };
 
   return (
-    <div className="w-full md:max-w-md bg-white rounded-2xl shadow-xl flex flex-col border border-gray-200 text-black">
+    <div className="w-full md:max-w-md bg-white rounded-2xl shadow-xl flex flex-col border border-gray-200 text-black transition-all duration-300 ease-in-out transform scale-100 opacity-100 translate-y-0 motion-reduce:transform-none motion-reduce:transition-none">
       {/* Header */}
       <div className="bg-blue-600 text-white p-4 rounded-t-2xl font-semibold text-center text-lg">
-        KinéBot
+        Mon Assistant Kiné
       </div>
 
       {/* Messages */}
@@ -79,7 +79,7 @@ function ChatPopup({ patientId }) {
         {messages.map((msg, index) => (
           <div key={index} className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} animate-fade-in`}>
             {msg.sender === 'bot' && index === 0 && (
-              <div className="text-xs text-gray-500 mb-1 ml-10">KinéBot</div>
+              <div className="text-xs text-gray-500 mb-1 ml-10">MAK</div>
             )}
             {msg.sender === 'user' && (
               <div className="text-xs text-gray-500 mb-1 mr-10">Vous</div>
@@ -88,7 +88,7 @@ function ChatPopup({ patientId }) {
               {msg.sender === 'bot' && (
                 <img
                   src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png"
-                  alt="KinéBot Avatar"
+                  alt="Avatar MAK"
                   className="w-8 h-8 rounded-full"
                 />
               )}
